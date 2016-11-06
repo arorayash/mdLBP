@@ -1,8 +1,7 @@
 import com.sun.javafx.geom.Vec3d;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.Size;
+import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 
 import java.util.*;
 
@@ -79,6 +78,8 @@ class HelloCV {
                 int[][] mdlbptn = mdlbptn(mdm);
                 int[] mdlbpt = mdlbpt(mdlbptn, fn);
 
+                //Generating the images
+
                 malbp1.put(i, j, malbpt1);
                 malbp2.put(i, j, malbpt2);
                 malbp3.put(i, j, malbpt3);
@@ -93,18 +94,23 @@ class HelloCV {
                 mdlbp7.put(i, j, mdlbpt[6]);
                 mdlbp8.put(i, j, mdlbpt[7]);
 
-                //System.out.println(lbparr1[7]);
+                //System.out.println(malbpt);
             }
         }
+
+        //CalculateHist(malbp1);
+
 
         //Mat mam = madder(channel1, channel2, channel3);
 
       //  System.out.println("maM : \n"+mam);
+        System.out.println("Calculating the Multichannel Adder based LBP...");
         Imgcodecs.imwrite("resources/img0_malbp1.jpg", malbp1);
         Imgcodecs.imwrite("resources/img0_malbp2.jpg", malbp2);
         Imgcodecs.imwrite("resources/img0_malbp3.jpg", malbp3);
         Imgcodecs.imwrite("resources/img0_malbp4.jpg", malbp4);
 
+        System.out.println("Calculating the Multichannel Decoder based LBP...");
         Imgcodecs.imwrite("resources/img0_mdlbp1.jpg", mdlbp1);
         Imgcodecs.imwrite("resources/img0_mdlbp2.jpg", mdlbp2);
         Imgcodecs.imwrite("resources/img0_mdlbp3.jpg", mdlbp3);
@@ -114,7 +120,10 @@ class HelloCV {
         Imgcodecs.imwrite("resources/img0_mdlbp7.jpg", mdlbp7);
         Imgcodecs.imwrite("resources/img0_mdlbp8.jpg", mdlbp8);
 
-        //maLBP(mam, 1);
+        //Calculating the Feature vectors
+        CalculateFVadder(malbp1, malbp2, malbp3, malbp4);
+        CalculateFVdecoder(mdlbp1, mdlbp2, mdlbp3, mdlbp4, mdlbp5, mdlbp6, mdlbp7, mdlbp8);
+       //calcHistogram(malbp1);
 
     }
 
@@ -141,7 +150,7 @@ class HelloCV {
         }
         //System.out.println(dest);
         //Imgcodecs.imwrite("resources/img0_try.jpg", dest);
-        System.out.println(dest);
+        //System.out.println(dest);
         return dest;
     }
 
@@ -317,6 +326,107 @@ class HelloCV {
             }
         }
         return maLBP;
+    }
+
+    public static void calcHistogram(Mat img)
+    {
+        MatOfInt histsize = new MatOfInt(256);
+
+        final MatOfFloat histRange = new MatOfFloat(0f, 256f);
+
+        boolean accumulate = false;
+
+        Mat hist = new Mat();
+
+        List<Mat> hList = new ArrayList<>();
+        hList.add(img);
+
+        Imgproc.calcHist(hList, new MatOfInt(3), new Mat(), hist, histsize, histRange, accumulate);
+
+        int hist_w = 512;
+        int hist_h = 600;
+        long bin_w = Math.round((double) hist_w/256);
+
+        Mat histImg = new Mat(hist_h, hist_w, CvType.CV_8UC1);
+        Core.normalize(hist, hist, 3, histImg.rows(), Core.NORM_MINMAX);
+
+        for(int i = 1; i<256; i++)
+        {
+            Point p1 = new Point(bin_w*(i-1), hist_h - Math.round(hist.get(i-1, 0)[0]));
+            Point p2 = new Point(bin_w*(i), hist_h - Math.round(hist.get(i, 0)[0]));
+            Imgproc.line(histImg, p1, p2, new Scalar(255, 0, 0), 2, 8, 0);
+        }
+
+        Imgcodecs.imwrite("resources/img0_hist.jpg", histImg);
+
+    }
+
+    public static int[] CalculateHist(Mat img)
+    {
+        int sigma, summation = 0;
+        int[] hist = new int[8];
+        for(int k=0; k<8; k++)
+        {
+            for(int i = 0; i < img.rows(); i++)
+            {
+                for(int j = 0; j< img.cols(); j++)
+                {
+                    if(img.get(i, j)[0] == (double)k)
+                    {
+                        sigma = 1;
+                        //System.out.println((double)k);
+                    }
+                    else
+                    {
+                        sigma = 0;
+                    }
+                    summation = summation+sigma;
+                }
+            }
+            hist[k] = summation;
+            //System.out.println(hist[k]);
+        }
+        return hist;
+    }
+
+    public static void CalculateFVadder(Mat malbp1, Mat malbp2, Mat malbp3, Mat malbp4)
+    {
+        List<Integer> FVadder = new ArrayList<Integer>();
+        //System.out.println(CalculateHist(malbp1)[0]);
+        for(int i = 0; i<4; i++)
+        FVadder.add(CalculateHist(malbp1)[i]/4);
+        for(int i = 0; i<4; i++)
+        FVadder.add(CalculateHist(malbp2)[i]/4);
+        for(int i = 0; i<4; i++)
+        FVadder.add(CalculateHist(malbp3)[i]/4);
+        for(int i = 0; i<4; i++)
+        FVadder.add(CalculateHist(malbp4)[i]/4);
+        System.out.println("The feature vector of the Multichannel adder based LBP - ");
+        System.out.println(FVadder);
+    }
+
+    public static void CalculateFVdecoder(Mat mdlbp1, Mat mdlbp2, Mat mdlbp3, Mat mdlbp4, Mat mdlbp5, Mat mdlbp6, Mat mdlbp7, Mat mdlbp8)
+    {
+        List<Integer> FVdecoder = new ArrayList<Integer>();
+        //System.out.println(CalculateHist(malbp1)[0]);
+        for(int i = 0; i<4; i++)
+            FVdecoder.add(CalculateHist(mdlbp1)[i]/8);
+        for(int i = 0; i<4; i++)
+            FVdecoder.add(CalculateHist(mdlbp2)[i]/8);
+        for(int i = 0; i<4; i++)
+            FVdecoder.add(CalculateHist(mdlbp3)[i]/8);
+        for(int i = 0; i<4; i++)
+            FVdecoder.add(CalculateHist(mdlbp4)[i]/8);
+        for(int i = 0; i<4; i++)
+            FVdecoder.add(CalculateHist(mdlbp5)[i]/8);
+        for(int i = 0; i<4; i++)
+            FVdecoder.add(CalculateHist(mdlbp6)[i]/8);
+        for(int i = 0; i<4; i++)
+            FVdecoder.add(CalculateHist(mdlbp7)[i]/8);
+        for(int i = 0; i<4; i++)
+            FVdecoder.add(CalculateHist(mdlbp8)[i]/8);
+        System.out.println("\n The feature vector of the Multichannel decoder based LBP - ");
+        System.out.println(FVdecoder);
     }
 
 }
