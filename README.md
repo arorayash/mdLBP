@@ -51,22 +51,20 @@ For simplicity, we consider 8 neighbours and radius of 1 unit.
 
 ### The formulae for calculating the LBP of a channel are given as  -
 
-![](https://www.dropbox.com/s/lynsmn0dqxykuv4/image22.png?dl=1)
+<img src="https://www.dropbox.com/s/lynsmn0dqxykuv4/image22.png?dl=1" width="50%">
+
 
 While calculating the LBP for each channel, multichannel adder and decoder maps are used to calculate the maMn(x, y) and mdMn(x, y) values. The table is given as follows.
 
-![](https://www.dropbox.com/s/1qoik5e9fgfrpsg/image24.png?dl=1)
+<img src="https://www.dropbox.com/s/1qoik5e9fgfrpsg/image24.png?dl=1" width="50%">
 
-
-![](https://www.dropbox.com/s/lb2u1dsftsq3opi/image10.png?dl=1)
-
+<img src="https://www.dropbox.com/s/lb2u1dsftsq3opi/image10.png?dl=1" width="50%">
 
 
 		 	 	 		
 The following formulae are used to calculate the Multichannel adder based local binary pattern for each input channels. The corresponding output are given.
 
-
-![](https://www.dropbox.com/s/eba17e8v05lgd7r/image5.png?dl=1)
+<img src="https://www.dropbox.com/s/eba17e8v05lgd7r/image5.png?dl=1" width="50%">
 
 ![](https://www.dropbox.com/s/bkidmvzaqd8uclj/image19.jpg?dl=1) ![](https://www.dropbox.com/s/nrtpl3frrym79c4/image20.jpg?dl=1)
 ![](https://www.dropbox.com/s/2fztul5irt3qdlm/image15.jpg?dl=1) ![](https://www.dropbox.com/s/zzwkmaitnkf8aaj/image7.jpg?dl=1)
@@ -75,14 +73,13 @@ The following formulae are used to calculate the Multichannel adder based local 
 The following formulae are used to calculate the Multichannel decoder based local binary pattern for each input channels. The corresponding output are given.
 
 
-![](https://www.dropbox.com/s/vqd28gh1gcff2bp/image21.png?dl=1)
+<img src="https://www.dropbox.com/s/vqd28gh1gcff2bp/image21.png?dl=1" width="50%">
 
 ![](https://www.dropbox.com/s/l9140askcojm8tg/image26.jpg?dl=1) ![](https://www.dropbox.com/s/la92b3bce6zxqwl/image17.jpg?dl=1) ![](https://www.dropbox.com/s/0kixazdwk3iz35a/image4.jpg?dl=1) ![](https://www.dropbox.com/s/ibxzhqpnw4fkfqq/image2.jpg?dl=1) ![](https://www.dropbox.com/s/qofutgf0dmw11a3/image3.jpg?dl=1) ![](https://www.dropbox.com/s/uwgpjz00egt34a7/image13.jpg?dl=1) ![](https://www.dropbox.com/s/kxp0jorckmb8s1n/image25.jpg?dl=1) ![](https://www.dropbox.com/s/wmlrkbrhxbkfk4p/image16.jpg?dl=1)
 
 The feature vectors are then calculated using the following formulae - 
 
-![](https://www.dropbox.com/s/dc9vnnumy1xga5c/image11.png?dl=1)
-
+<img src="https://www.dropbox.com/s/dc9vnnumy1xga5c/image11.png?dl=1" width="50%">
 
 
 ### Inference and conclusion
