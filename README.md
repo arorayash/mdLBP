@@ -1,4 +1,4 @@
-IMAGE VISION AND COMPUTING
+IMAGE AND VISION COMPUTING
 
 # Multichannel Decoded Local Binary Patterns for Content Based Image Retrieval 
 
