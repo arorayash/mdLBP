@@ -32,7 +32,7 @@ Consider the given input image -
 
 The image is first split into three (Red, Green, Blue) channels.
     
-![alt text](https://www.dropbox.com/s/w4cgblsz8hka20r/image1.jpg?dl=1)      ![alt text](https://www.dropbox.com/s/dis7wnf9lioapp2/image14.jpg?dl=1)       ![alt text](https://www.dropbox.com/s/714u9yls34gm111/image23.jpg?dl=1)
+![alt text](https://dl.dropboxusercontent.com/s/w4cgblsz8hka20r/image1.jpg?dl=1)      ![alt text](https://dl.dropboxusercontent.com/s/dis7wnf9lioapp2/image14.jpg?dl=1)       ![alt text](https://dl.dropboxusercontent.com/s/714u9yls34gm111/image23.jpg?dl=1)
 
 Each channel is then padded in order to calculate the Local Binary Pattern. The procedure for calculating LBP is given as follows -
 
